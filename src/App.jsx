@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
-import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Code, Brain, CircuitBoard, Cog, Wrench, Bot, LineChart, Download, Menu, X } from 'lucide-react'
+import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Code, Brain, CircuitBoard, Cog, Wrench, Bot, LineChart, Download, Menu, X, Globe, Smartphone, Play, Youtube } from 'lucide-react'
 import profilePhoto from './assets/profile-photo.png'
 import './App.css'
 
@@ -28,7 +28,7 @@ function App() {
   ]
 
   const skills = {
-    "Embedded & Firmware": ["C++", "C", "ESP32", "MSP432", "PWM Generation", "Timers & Interrupts", "ADC/GPIO", "Real-time Control Loops"],
+    "Embedded & Firmware": ["C++", "C", "Microcontrollers & SBCs (ESP32, MSP432, RPi 4 & 5)", "PWM Generation", "ADC/GPIO", "Real-time Control Loops"],
     "Motor & Actuator Control": ["BLDC with ESCs", "Stepper Drivers", "Servos", "Multi-axis Coordination", "ESC Tuning & Calibration"],
     "Hardware & Sensors": ["Piezoelectric Sensor Integration", "ESC/Servo Interfacing", "Actuator Wiring", "Soldering & Assembly", "Bench Debugging"],
     "Robotics & Vision": ["ROS (coursework)", "OpenCV", "6-DOF Arm Control", "Machine Vision", "BLE Device Networks"],
@@ -39,7 +39,7 @@ function App() {
 
   const experience = [
     {
-      company: "PongFox",
+      company: "BodhiLabs (PongFox)",
       location: "Bengaluru, Karnataka, India",
       position: "AI & Full Stack Developer (Robotics)",
       period: "Jul 2024 - Present",
@@ -52,7 +52,13 @@ function App() {
         "Leads development of the cross-platform React Native app and Python/SQL backend behind it, delivering end-to-end latency of under 0.5 s from app command to motor response.",
         "Diagnoses and resolves faults across the full stack — motor and ESC behaviour, sensor anomalies, BLE dropouts, firmware-to-app integration — isolating root causes between hardware, firmware and application layers."
       ],
-      technologies: ["Embedded C++", "ESP32", "BLDC/ESC", "PWM", "BLE", "Piezoelectric Sensors", "Python", "React Native", "React", "TypeScript", "JavaScript", "SQL", "FastAPI", "RESTful APIs", "LLM APIs", "Raspberry Pi", "IoT protocols", "Git"]
+      technologies: ["Embedded C++", "ESP32", "BLDC/ESC", "PWM", "BLE", "Piezoelectric Sensors", "Python", "React Native", "React", "TypeScript", "JavaScript", "SQL", "FastAPI", "RESTful APIs", "LLM APIs", "Raspberry Pi", "IoT protocols", "Git"],
+      links: [
+        { label: "pongfox.com", href: "https://pongfox.com", icon: "globe" },
+        { label: "App Store", href: "https://apps.apple.com/us/app/pongfox-table-tennis-robot/id1497681103", icon: "ios" },
+        { label: "Google Play", href: "https://play.google.com/store/apps/details?id=com.pongfox", icon: "android" },
+        { label: "YouTube", href: "https://www.youtube.com/@PongFoxTabletennis/featured", icon: "youtube" }
+      ]
     },
     {
       company: "General Engineering Corporation (GEC)",
@@ -60,12 +66,10 @@ function App() {
       position: "Engineering Intern",
       period: "Sep 2021 - Nov 2021",
       achievements: [
-        "Analyzed machining processes for cost/time efficiency, utilizing Python for data preparation",
-        "Developed interactive dashboards and reports using Power BI to support production decision-making",
-        "Optimized Power BI data models achieving a 25% reduction in query response time",
-        "Automated data refresh schedules for the reporting pipeline"
+        "Carried out the initial Raspberry Pi 4 integrations across all machines for an internal IoT system, bringing per-machine progress tracking into a single view.",
+        "Analyzed machining processes for cost and cycle-time efficiency, building Python data pipelines to prepare the underlying data."
       ],
-      technologies: ["Power BI", "Python", "DAX"]
+      technologies: ["Raspberry Pi 4", "Python", "IoT", "Sensor Integration"]
     }
   ]
 
@@ -112,6 +116,16 @@ function App() {
       coursework: "Robotics & ROS, Control Systems, Embedded Systems, Power Electronics, Machine Vision"
     }
   ]
+
+  const getLinkIcon = (icon) => {
+    switch (icon) {
+      case "globe": return <Globe className="h-3.5 w-3.5" />
+      case "ios": return <Smartphone className="h-3.5 w-3.5" />
+      case "android": return <Play className="h-3.5 w-3.5" />
+      case "youtube": return <Youtube className="h-3.5 w-3.5" />
+      default: return <ExternalLink className="h-3.5 w-3.5" />
+    }
+  }
 
   const getSkillIcon = (category) => {
     switch (category) {
@@ -299,8 +313,8 @@ function App() {
           <div className="grid items-start gap-12 lg:grid-cols-2">
             <div className="space-y-6">
               <p className="text-lg leading-relaxed text-slate-400">
-                A mechatronics engineer with over two years on a commercial robotics product, backed by a Master of
-                Science in Computer Science with a concentration in Artificial Intelligence.
+                An AI-driven mechatronics engineer with over two years on a commercial robotics product, backed by a
+                Master of Science in Computer Science with a concentration in Artificial Intelligence.
               </p>
               <p className="text-lg leading-relaxed text-slate-400">
                 I develop the embedded firmware and control software end to end &mdash; C++ firmware on ESP32 driving seven
@@ -309,8 +323,7 @@ function App() {
               </p>
               <p className="text-lg leading-relaxed text-slate-400">
                 My work spans low-level motor control through to the React Native app and Python backend that drive the
-                robot, and I am the usual first call when motors, sensors or hardware-software integration misbehave
-                &mdash; isolating root causes between the hardware, firmware and application layers.
+                robot, isolating root causes between the hardware, firmware and application layers.
               </p>
             </div>
             <div className="space-y-3 rounded-2xl border border-white/5 bg-white/[0.03] p-6 backdrop-blur-sm">
@@ -318,7 +331,7 @@ function App() {
                 <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
                   <MapPin className="h-5 w-5" />
                 </span>
-                <span className="text-slate-300">Bengaluru, Karnataka, India</span>
+                <span className="text-slate-300">India</span>
               </div>
               <a
                 href="mailto:yashvora2711@gmail.com"
@@ -406,6 +419,22 @@ function App() {
                       </Badge>
                     ))}
                   </div>
+                  {job.links && (
+                    <div className="mt-6 flex flex-wrap gap-2 border-t border-white/5 pt-5">
+                      {job.links.map((link) => (
+                        <a
+                          key={link.href}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:border-cyan-500/40 hover:bg-white/[0.06] hover:text-cyan-400"
+                        >
+                          {getLinkIcon(link.icon)}
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
