@@ -96,7 +96,7 @@ function App() {
       position: "Engineering Intern",
       period: "Sep 2021 - Nov 2021",
       achievements: [
-        "Carried out the initial Raspberry Pi 4 integrations across all machines for an internal IoT system, bringing per-machine progress tracking into a single view.",
+        "Carried out the initial Raspberry Pi 4 integrations across 8 different machines for an internal IoT system, replacing manual shift-end logging with live per-machine progress in a single view.",
         "Analyzed machining processes for cost and cycle-time efficiency, building Python data pipelines to prepare the underlying data."
       ],
       technologies: ["Raspberry Pi 4", "Python", "IoT", "Sensor Integration"]
