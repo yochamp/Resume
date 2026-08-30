@@ -1,13 +1,43 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
-import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Code, Brain, CircuitBoard, Cog, Wrench, Bot, LineChart, Download, Menu, X, Globe, Smartphone, Play, Youtube } from 'lucide-react'
+import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Code, Brain, CircuitBoard, Cog, Wrench, Bot, LineChart, Download, Menu, X, Globe, Smartphone, Play, Youtube, Sun, Moon, Monitor } from 'lucide-react'
 import profilePhoto from './assets/profile-photo.png'
 import './App.css'
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
+
+  // "system" follows the OS setting and is the default until the visitor chooses.
+  const [theme, setTheme] = useState(() => {
+    try {
+      return localStorage.getItem("theme") || "system"
+    } catch {
+      // storage blocked (private mode, cookies off) - fall back to system
+      return "system"
+    }
+  })
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)")
+    const apply = () => {
+      const isDark = theme === "dark" || (theme === "system" && mq.matches)
+      document.documentElement.classList.toggle("dark", isDark)
+    }
+    apply()
+
+    try {
+      if (theme === "system") localStorage.removeItem("theme")
+      else localStorage.setItem("theme", theme)
+    } catch {
+      // storage blocked - the choice just will not persist
+    }
+
+    if (theme !== "system") return
+    mq.addEventListener("change", apply)
+    return () => mq.removeEventListener("change", apply)
+  }, [theme])
 
   const resumeUrl = `${import.meta.env.BASE_URL}Yash_Vora_Resume.pdf`
 
@@ -44,7 +74,7 @@ function App() {
       position: "AI & Full Stack Developer (Robotics)",
       period: "Jul 2024 - Present",
       achievements: [
-        "Develops C++ firmware on ESP32 for a robotic table-tennis trainer driving seven actuators — 3× BLDC motors, 1× stepper, 3× servos — coordinating ball speed, spin, feed rate and 2-axis head aiming from a single control loop.",
+        "Developed C++ firmware on ESP32 for a robotic table-tennis trainer driving seven actuators — 3× BLDC motors, 1× stepper, 3× servos — coordinating ball speed, spin, feed rate and 2-axis head aiming from a single control loop.",
         "Tunes ESC parameters and PWM modulation across the BLDC drivetrain, holding shot-to-shot ball placement within ±2.5 cm of target on a given unit despite mechanical variation between wheels.",
         "Engineered the sensor-integrated \"SmartPad\" accessory: conditioned piezoelectric sensor output into an ESP32 ADC to detect ball impacts and stream events over BLE to the robot controller, automating serve triggering.",
         "Reworked BLE pairing across robot, SmartPad and mobile app, replacing a scheme that required each device MAC address to be hard-coded into its counterpart with automatic discovery and connection — cutting per-unit pairing from 30–45 minutes of manual provisioning to roughly 5 seconds.",
@@ -141,27 +171,28 @@ function App() {
   }
 
   return (
-    <div className="dark relative min-h-screen bg-slate-950 text-slate-300 selection:bg-cyan-500/30 selection:text-white">
+    <div className="relative min-h-screen bg-[var(--bg)] text-[var(--body-strong)] selection:bg-[var(--accent-soft)] selection:text-[var(--heading)]">
       {/* Ambient background */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 -left-32 h-[32rem] w-[32rem] rounded-full bg-cyan-500/10 blur-[120px]" />
-        <div className="absolute top-1/3 -right-40 h-[34rem] w-[34rem] rounded-full bg-blue-600/10 blur-[130px]" />
-        <div className="absolute bottom-0 left-1/3 h-[28rem] w-[28rem] rounded-full bg-indigo-500/10 blur-[120px]" />
+        <div className="absolute -top-40 -left-32 h-[32rem] w-[32rem] rounded-full bg-[var(--accent-soft)] blur-[120px]" />
+        <div className="absolute top-1/3 -right-40 h-[34rem] w-[34rem] rounded-full bg-[var(--glow-2)] blur-[130px]" />
+        <div className="absolute bottom-0 left-1/3 h-[28rem] w-[28rem] rounded-full bg-[var(--glow-3)] blur-[120px]" />
         <div
-          className="absolute inset-0 opacity-[0.035]"
+          className="absolute inset-0"
           style={{
             backgroundImage:
-              'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)',
-            backgroundSize: '64px 64px'
+              'linear-gradient(to right, var(--grid-line) 1px, transparent 1px), linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px)',
+            backgroundSize: '64px 64px',
+            opacity: 'var(--grid-opacity)'
           }}
         />
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-slate-950/80 backdrop-blur-xl">
+      <nav className="fixed top-0 z-50 w-full border-b border-[var(--line)] bg-[var(--bg-blur)] backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-6 py-4">
           <div className="flex items-center justify-between">
-            <a href="#top" className="text-lg font-bold tracking-tight text-white">
+            <a href="#top" className="text-lg font-bold tracking-tight text-[var(--heading)]">
               Yash Vora
             </a>
             <div className="hidden md:flex md:items-center md:gap-8">
@@ -169,11 +200,12 @@ function App() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-slate-400 transition-colors hover:text-cyan-400"
+                  className="text-sm text-[var(--body)] transition-colors hover:text-[var(--accent)]"
                 >
                   {link.label}
                 </a>
               ))}
+              <ThemeToggle theme={theme} setTheme={setTheme} />
               <Button
                 asChild
                 size="sm"
@@ -185,24 +217,27 @@ function App() {
                 </a>
               </Button>
             </div>
-            <button
-              type="button"
-              onClick={() => setMenuOpen((open) => !open)}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              className="-mr-2 p-2 text-slate-300 transition-colors hover:text-cyan-400 md:hidden"
-            >
-              {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            <div className="flex items-center gap-2 md:hidden">
+              <ThemeToggle theme={theme} setTheme={setTheme} />
+              <button
+                type="button"
+                onClick={() => setMenuOpen((open) => !open)}
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={menuOpen}
+                className="-mr-2 p-2 text-[var(--body-strong)] transition-colors hover:text-[var(--accent)]"
+              >
+                {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
           {menuOpen && (
-            <div className="mt-4 flex flex-col border-t border-white/5 pt-4 md:hidden">
+            <div className="mt-4 flex flex-col border-t border-[var(--line)] pt-4 md:hidden">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="py-2 text-slate-400 transition-colors hover:text-cyan-400"
+                  className="py-2 text-[var(--body)] transition-colors hover:text-[var(--accent)]"
                 >
                   {link.label}
                 </a>
@@ -211,7 +246,7 @@ function App() {
                 href={resumeUrl}
                 download
                 onClick={() => setMenuOpen(false)}
-                className="flex items-center gap-2 py-2 font-medium text-cyan-400"
+                className="flex items-center gap-2 py-2 font-medium text-[var(--accent)]"
               >
                 <Download className="h-4 w-4" />
                 Download Resume
@@ -226,20 +261,20 @@ function App() {
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col items-center gap-14 lg:flex-row">
             <div className="flex-1 text-center lg:text-left">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-wide text-cyan-300 uppercase">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[var(--line-strong)] bg-[var(--surface-2)] px-4 py-1.5 text-xs font-medium tracking-wide text-[var(--accent)] uppercase">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)]" />
                 Robotics &middot; Embedded &middot; Firmware
               </div>
-              <h1 className="mb-5 text-5xl font-bold tracking-tight text-white lg:text-7xl">
+              <h1 className="mb-5 text-5xl font-bold tracking-tight text-[var(--heading)] lg:text-7xl">
                 Hi, I&apos;m{' '}
                 <span className="bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 bg-clip-text text-transparent">
                   Yash Vora
                 </span>
               </h1>
-              <h2 className="mb-6 text-2xl font-medium text-slate-300 lg:text-3xl">
+              <h2 className="mb-6 text-2xl font-medium text-[var(--body-strong)] lg:text-3xl">
                 Robotics &amp; Embedded Systems Engineer
               </h2>
-              <p className="mx-auto mb-9 max-w-2xl text-lg leading-relaxed text-slate-400 lg:mx-0">
+              <p className="mx-auto mb-9 max-w-2xl text-lg leading-relaxed text-[var(--body)] lg:mx-0">
                 I co-develop the embedded firmware and control software behind a commercial robotics product &mdash; ESP32
                 firmware driving seven actuators, ESC-based BLDC motor control, piezoelectric sensing and BLE device
                 networking &mdash; along with the mobile app and backend that drive the robot.
@@ -259,7 +294,7 @@ function App() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+                  className="border-[var(--line-strong)] bg-[var(--surface-2)] text-[var(--body-strong)] hover:border-[var(--accent-border)] hover:bg-[var(--surface-hover)] hover:text-[var(--heading)]"
                 >
                   <a href={resumeUrl} download className="flex items-center gap-2">
                     <Download className="h-4 w-4" />
@@ -270,7 +305,7 @@ function App() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+                  className="border-[var(--line-strong)] bg-[var(--surface-2)] text-[var(--body-strong)] hover:border-[var(--accent-border)] hover:bg-[var(--surface-hover)] hover:text-[var(--heading)]"
                 >
                   <a href="#contact" className="flex items-center gap-2">
                     <Mail className="h-4 w-4" />
@@ -282,8 +317,8 @@ function App() {
             <div className="flex-shrink-0">
               <div className="relative">
                 <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-cyan-500/30 via-blue-600/20 to-transparent blur-2xl" />
-                <div className="relative h-72 w-72 overflow-hidden rounded-full border border-white/10 p-1.5 lg:h-80 lg:w-80">
-                  <div className="h-full w-full overflow-hidden rounded-full ring-1 ring-cyan-400/30">
+                <div className="relative h-72 w-72 overflow-hidden rounded-full border border-[var(--line-strong)] p-1.5 lg:h-80 lg:w-80">
+                  <div className="h-full w-full overflow-hidden rounded-full ring-1 ring-[var(--accent-ring)]">
                     <img src={profilePhoto} alt="Yash Vora" className="h-full w-full object-cover" />
                   </div>
                 </div>
@@ -296,10 +331,10 @@ function App() {
             {highlights.map((item, index) => (
               <div
                 key={index}
-                className="rounded-2xl border border-white/5 bg-white/[0.03] p-5 backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+                className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-5 backdrop-blur-sm transition-colors hover:border-[var(--accent-border)]"
               >
-                <div className="mb-1 text-2xl font-bold text-cyan-400 lg:text-3xl">{item.value}</div>
-                <div className="text-xs leading-relaxed text-slate-500">{item.label}</div>
+                <div className="mb-1 text-2xl font-bold text-[var(--accent)] lg:text-3xl">{item.value}</div>
+                <div className="text-xs leading-relaxed text-[var(--muted)]">{item.label}</div>
               </div>
             ))}
           </div>
@@ -307,49 +342,49 @@ function App() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="border-t border-white/5 px-6 py-24">
+      <section id="about" className="border-t border-[var(--line)] px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <SectionHeading kicker="About" title="Who I am" />
           <div className="grid items-start gap-12 lg:grid-cols-2">
             <div className="space-y-6">
-              <p className="text-lg leading-relaxed text-slate-400">
+              <p className="text-lg leading-relaxed text-[var(--body)]">
                 An AI-driven mechatronics engineer with over two years on a commercial robotics product, backed by a
                 Master of Science in Computer Science with a concentration in Artificial Intelligence.
               </p>
-              <p className="text-lg leading-relaxed text-slate-400">
+              <p className="text-lg leading-relaxed text-[var(--body)]">
                 I develop the embedded firmware and control software end to end &mdash; C++ firmware on ESP32 driving seven
                 actuators, ESC-based BLDC motor control, piezoelectric sensing conditioned into the ADC, and BLE device
                 networking across robot, accessory and app.
               </p>
-              <p className="text-lg leading-relaxed text-slate-400">
+              <p className="text-lg leading-relaxed text-[var(--body)]">
                 My work spans low-level motor control through to the React Native app and Python backend that drive the
                 robot, isolating root causes between the hardware, firmware and application layers.
               </p>
             </div>
-            <div className="space-y-3 rounded-2xl border border-white/5 bg-white/[0.03] p-6 backdrop-blur-sm">
+            <div className="space-y-3 rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6 backdrop-blur-sm">
               <div className="flex items-center gap-4 rounded-xl px-2 py-2.5">
-                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
                   <MapPin className="h-5 w-5" />
                 </span>
-                <span className="text-slate-300">India</span>
+                <span className="text-[var(--body-strong)]">India</span>
               </div>
               <a
                 href="mailto:yashvora2711@gmail.com"
-                className="flex items-center gap-4 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/5"
+                className="flex items-center gap-4 rounded-xl px-2 py-2.5 transition-colors hover:bg-[var(--surface-hover)]"
               >
-                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
                   <Mail className="h-5 w-5" />
                 </span>
-                <span className="text-slate-300 transition-colors hover:text-cyan-400">yashvora2711@gmail.com</span>
+                <span className="text-[var(--body-strong)] transition-colors hover:text-[var(--accent)]">yashvora2711@gmail.com</span>
               </a>
               <a
                 href="tel:+919930852711"
-                className="flex items-center gap-4 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/5"
+                className="flex items-center gap-4 rounded-xl px-2 py-2.5 transition-colors hover:bg-[var(--surface-hover)]"
               >
-                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--accent-soft)] text-[var(--accent)]">
                   <Phone className="h-5 w-5" />
                 </span>
-                <span className="text-slate-300 transition-colors hover:text-cyan-400">+91 9930852711</span>
+                <span className="text-[var(--body-strong)] transition-colors hover:text-[var(--accent)]">+91 9930852711</span>
               </a>
               <div className="flex gap-3 pt-3">
                 <a
@@ -357,7 +392,7 @@ function App() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-slate-400 transition-colors hover:border-cyan-500/40 hover:text-cyan-400"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--line-strong)] text-[var(--body)] transition-colors hover:border-[var(--accent-border)] hover:text-[var(--accent)]"
                 >
                   <Linkedin className="h-5 w-5" />
                 </a>
@@ -366,7 +401,7 @@ function App() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="GitHub"
-                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-slate-400 transition-colors hover:border-cyan-500/40 hover:text-cyan-400"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--line-strong)] text-[var(--body)] transition-colors hover:border-[var(--accent-border)] hover:text-[var(--accent)]"
                 >
                   <Github className="h-5 w-5" />
                 </a>
@@ -377,24 +412,24 @@ function App() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="border-t border-white/5 px-6 py-24">
+      <section id="experience" className="border-t border-[var(--line)] px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <SectionHeading kicker="Experience" title="Professional Experience" />
           <div className="space-y-6">
             {experience.map((job, index) => (
               <Card
                 key={index}
-                className="group border-white/5 bg-white/[0.03] backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+                className="group border-[var(--line)] bg-[var(--surface)] backdrop-blur-sm transition-colors hover:border-[var(--accent-border)]"
               >
                 <CardHeader>
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div>
-                      <CardTitle className="text-xl text-white">{job.position}</CardTitle>
-                      <CardDescription className="mt-1 text-base font-medium text-cyan-400">
+                      <CardTitle className="text-xl text-[var(--heading)]">{job.position}</CardTitle>
+                      <CardDescription className="mt-1 text-base font-medium text-[var(--accent)]">
                         {job.company} &middot; {job.location}
                       </CardDescription>
                     </div>
-                    <Badge className="self-start border-white/10 bg-white/5 font-normal text-slate-400">
+                    <Badge className="self-start border-[var(--line-strong)] bg-[var(--surface-2)] font-normal text-[var(--body)]">
                       {job.period}
                     </Badge>
                   </div>
@@ -402,8 +437,8 @@ function App() {
                 <CardContent>
                   <ul className="mb-6 space-y-3">
                     {job.achievements.map((achievement, idx) => (
-                      <li key={idx} className="flex items-start gap-3 leading-relaxed text-slate-400">
-                        <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-400" />
+                      <li key={idx} className="flex items-start gap-3 leading-relaxed text-[var(--body)]">
+                        <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[var(--accent)]" />
                         {achievement}
                       </li>
                     ))}
@@ -413,21 +448,21 @@ function App() {
                       <Badge
                         key={idx}
                         variant="outline"
-                        className="border-white/10 bg-white/[0.03] text-xs font-normal text-slate-400"
+                        className="border-[var(--line-strong)] bg-[var(--surface)] text-xs font-normal text-[var(--body)]"
                       >
                         {tech}
                       </Badge>
                     ))}
                   </div>
                   {job.links && (
-                    <div className="mt-6 flex flex-wrap gap-2 border-t border-white/5 pt-5">
+                    <div className="mt-6 flex flex-wrap gap-2 border-t border-[var(--line)] pt-5">
                       {job.links.map((link) => (
                         <a
                           key={link.href}
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:border-cyan-500/40 hover:bg-white/[0.06] hover:text-cyan-400"
+                          className="inline-flex items-center gap-2 rounded-lg border border-[var(--line-strong)] bg-[var(--surface)] px-3 py-1.5 text-xs font-medium text-[var(--body-strong)] transition-colors hover:border-[var(--accent-border)] hover:bg-[var(--surface-hover)] hover:text-[var(--accent)]"
                         >
                           {getLinkIcon(link.icon)}
                           {link.label}
@@ -443,29 +478,29 @@ function App() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="border-t border-white/5 px-6 py-24">
+      <section id="projects" className="border-t border-[var(--line)] px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <SectionHeading kicker="Projects" title="Featured Projects" />
           <div className="grid gap-6 md:grid-cols-2">
             {projects.map((project, index) => (
               <Card
                 key={index}
-                className="flex h-full flex-col border-white/5 bg-white/[0.03] backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+                className="flex h-full flex-col border-[var(--line)] bg-[var(--surface)] backdrop-blur-sm transition-colors hover:border-[var(--accent-border)]"
               >
                 <CardHeader>
-                  <div className="mb-1 font-mono text-xs text-cyan-400/70">
+                  <div className="mb-1 font-mono text-xs text-[var(--accent)]/70">
                     {String(index + 1).padStart(2, '0')}
                   </div>
-                  <CardTitle className="text-lg leading-snug text-white">{project.title}</CardTitle>
+                  <CardTitle className="text-lg leading-snug text-[var(--heading)]">{project.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-1 flex-col">
-                  <p className="mb-5 flex-grow text-sm leading-relaxed text-slate-400">{project.description}</p>
+                  <p className="mb-5 flex-grow text-sm leading-relaxed text-[var(--body)]">{project.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech, idx) => (
                       <Badge
                         key={idx}
                         variant="outline"
-                        className="border-white/10 bg-white/[0.03] text-xs font-normal text-slate-400"
+                        className="border-[var(--line-strong)] bg-[var(--surface)] text-xs font-normal text-[var(--body)]"
                       >
                         {tech}
                       </Badge>
@@ -479,18 +514,18 @@ function App() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="border-t border-white/5 px-6 py-24">
+      <section id="skills" className="border-t border-[var(--line)] px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <SectionHeading kicker="Skills" title="Technical Skills" />
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Object.entries(skills).map(([category, skillList], index) => (
               <Card
                 key={index}
-                className="border-white/5 bg-white/[0.03] backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+                className="border-[var(--line)] bg-[var(--surface)] backdrop-blur-sm transition-colors hover:border-[var(--accent-border)]"
               >
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-3 text-base text-white">
-                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-600/10 text-cyan-400">
+                  <CardTitle className="flex items-center gap-3 text-base text-[var(--heading)]">
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-600/10 text-[var(--accent)]">
                       {getSkillIcon(category)}
                     </span>
                     {category}
@@ -501,7 +536,7 @@ function App() {
                     {skillList.map((skill, idx) => (
                       <Badge
                         key={idx}
-                        className="border-white/10 bg-white/5 text-xs font-normal text-slate-300 hover:bg-white/10"
+                        className="border-[var(--line-strong)] bg-[var(--surface-2)] text-xs font-normal text-[var(--body-strong)] hover:bg-[var(--surface-hover)]"
                       >
                         {skill}
                       </Badge>
@@ -515,36 +550,36 @@ function App() {
       </section>
 
       {/* Education Section */}
-      <section id="education" className="border-t border-white/5 px-6 py-24">
+      <section id="education" className="border-t border-[var(--line)] px-6 py-24">
         <div className="mx-auto max-w-6xl">
           <SectionHeading kicker="Education" title="Education" />
           <div className="space-y-6">
             {education.map((edu, index) => (
               <Card
                 key={index}
-                className="border-white/5 bg-white/[0.03] backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+                className="border-[var(--line)] bg-[var(--surface)] backdrop-blur-sm transition-colors hover:border-[var(--accent-border)]"
               >
                 <CardHeader>
                   <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div>
-                      <CardTitle className="text-xl text-white">{edu.degree}</CardTitle>
-                      <CardDescription className="mt-1 text-base font-medium text-cyan-400">
+                      <CardTitle className="text-xl text-[var(--heading)]">{edu.degree}</CardTitle>
+                      <CardDescription className="mt-1 text-base font-medium text-[var(--accent)]">
                         {edu.institution} &middot; {edu.location}
                       </CardDescription>
                       {edu.concentration && (
-                        <p className="mt-3 text-slate-400">Concentration: {edu.concentration}</p>
+                        <p className="mt-3 text-[var(--body)]">Concentration: {edu.concentration}</p>
                       )}
-                      {edu.gpa && <p className="mt-1 font-medium text-slate-300">{edu.gpa}</p>}
+                      {edu.gpa && <p className="mt-1 font-medium text-[var(--body-strong)]">{edu.gpa}</p>}
                     </div>
-                    <Badge className="self-start border-white/10 bg-white/5 font-normal text-slate-400">
+                    <Badge className="self-start border-[var(--line-strong)] bg-[var(--surface-2)] font-normal text-[var(--body)]">
                       {edu.period}
                     </Badge>
                   </div>
                 </CardHeader>
                 {edu.coursework && (
                   <CardContent>
-                    <p className="text-sm leading-relaxed text-slate-400">
-                      <span className="font-medium text-slate-300">Relevant coursework:</span> {edu.coursework}
+                    <p className="text-sm leading-relaxed text-[var(--body)]">
+                      <span className="font-medium text-[var(--body-strong)]">Relevant coursework:</span> {edu.coursework}
                     </p>
                   </CardContent>
                 )}
@@ -555,10 +590,10 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="border-t border-white/5 px-6 py-24">
+      <section id="contact" className="border-t border-[var(--line)] px-6 py-24">
         <div className="mx-auto max-w-4xl text-center">
           <SectionHeading kicker="Contact" title="Get In Touch" centered />
-          <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-slate-400">
+          <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-[var(--body)]">
             I&apos;m always open to discussing robotics and embedded work, new opportunities and interesting problems.
             Feel free to reach out if you&apos;d like to connect.
           </p>
@@ -577,7 +612,7 @@ function App() {
               asChild
               variant="outline"
               size="lg"
-              className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+              className="border-[var(--line-strong)] bg-[var(--surface-2)] text-[var(--body-strong)] hover:border-[var(--accent-border)] hover:bg-[var(--surface-hover)] hover:text-[var(--heading)]"
             >
               <a href={resumeUrl} download className="flex items-center gap-2">
                 <Download className="h-4 w-4" />
@@ -588,7 +623,7 @@ function App() {
               asChild
               variant="outline"
               size="lg"
-              className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+              className="border-[var(--line-strong)] bg-[var(--surface-2)] text-[var(--body-strong)] hover:border-[var(--accent-border)] hover:bg-[var(--surface-hover)] hover:text-[var(--heading)]"
             >
               <a
                 href="https://www.linkedin.com/in/yochamp"
@@ -604,7 +639,7 @@ function App() {
               asChild
               variant="outline"
               size="lg"
-              className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+              className="border-[var(--line-strong)] bg-[var(--surface-2)] text-[var(--body-strong)] hover:border-[var(--accent-border)] hover:bg-[var(--surface-hover)] hover:text-[var(--heading)]"
             >
               <a
                 href="https://github.com/yochamp"
@@ -621,8 +656,8 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 px-6 py-10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
+      <footer className="border-t border-[var(--line)] px-6 py-10">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-[var(--muted)] sm:flex-row">
           <p>&copy; 2026 Yash Vora. All rights reserved.</p>
           <p>Built with React, Vite and Tailwind CSS.</p>
         </div>
@@ -631,11 +666,45 @@ function App() {
   )
 }
 
+function ThemeToggle({ theme, setTheme }) {
+  const options = [
+    { value: "light", label: "Light", icon: <Sun className="h-4 w-4" /> },
+    { value: "system", label: "System", icon: <Monitor className="h-4 w-4" /> },
+    { value: "dark", label: "Dark", icon: <Moon className="h-4 w-4" /> }
+  ]
+
+  return (
+    <div
+      role="group"
+      aria-label="Colour theme"
+      className="inline-flex items-center gap-0.5 rounded-lg border border-[var(--line-strong)] bg-[var(--surface)] p-0.5"
+    >
+      {options.map(({ value, label, icon }) => (
+        <button
+          key={value}
+          type="button"
+          onClick={() => setTheme(value)}
+          aria-label={`${label} theme`}
+          aria-pressed={theme === value}
+          title={`${label} theme`}
+          className={`rounded-md p-1.5 transition-colors ${
+            theme === value
+              ? "bg-[var(--surface-hover)] text-[var(--accent)]"
+              : "text-[var(--body)] hover:text-[var(--accent)]"
+          }`}
+        >
+          {icon}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function SectionHeading({ kicker, title, centered = false }) {
   return (
     <div className={centered ? "mb-8 text-center" : "mb-12"}>
-      <div className="mb-3 text-xs font-medium tracking-[0.2em] text-cyan-400 uppercase">{kicker}</div>
-      <h2 className="text-3xl font-bold tracking-tight text-white lg:text-4xl">{title}</h2>
+      <div className="mb-3 text-xs font-medium tracking-[0.2em] text-[var(--accent)] uppercase">{kicker}</div>
+      <h2 className="text-3xl font-bold tracking-tight text-[var(--heading)] lg:text-4xl">{title}</h2>
       <div
         className={
           centered
