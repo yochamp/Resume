@@ -1,65 +1,85 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
 import { Badge } from '@/components/ui/badge.jsx'
-import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Code, Database, Cloud, Cpu, Brain, Smartphone } from 'lucide-react'
+import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Code, Brain, CircuitBoard, Cog, Wrench, Bot, LineChart, Download, Menu, X } from 'lucide-react'
 import profilePhoto from './assets/profile-photo.png'
 import './App.css'
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const resumeUrl = `${import.meta.env.BASE_URL}Yash_Vora_Resume.pdf`
+
+  const navLinks = [
+    { href: "#about", label: "About" },
+    { href: "#experience", label: "Experience" },
+    { href: "#projects", label: "Projects" },
+    { href: "#skills", label: "Skills" },
+    { href: "#education", label: "Education" },
+    { href: "#contact", label: "Contact" }
+  ]
+
+  const highlights = [
+    { value: "7", label: "actuators driven from a single control loop" },
+    { value: "±2.5 cm", label: "shot-to-shot ball placement" },
+    { value: "<0.5 s", label: "app command to motor response" },
+    { value: "~5 s", label: "device pairing, down from 30–45 min" }
+  ]
+
   const skills = {
-    "Programming Languages": ["Python", "C++", "Java", "JavaScript", "TypeScript", "SQL", "C#", "HTML/CSS", "Assembly", "JSON", "Ruby", "XML", "C"],
-    "ML/AI": ["LLM Integration", "Agentic Workflows", "Prompt Optimization", "NLP", "Speech-to-Text", "Data Cleaning & Processing", "Decision Trees", "KNN", "Regression", "SVM", "Neural Networks", "K-Means", "NLTK", "Scikit-Learn"],
-    "Cloud Software": ["AWS", "Microsoft Azure"],
-    "Frameworks & Tools": ["React Native", "React.js", "FastAPI", "Git", "Docker"],
-    "Database Management": ["MySQL"],
-    "Software/Tools": ["Power BI", "Raspberry Pi", "MATLAB", "OpenCV", "Eclipse", "Anaconda", "Visual Studio Code", "GitHub", "Jira", "Code Blocks"],
-    "Operating Systems": ["Windows", "macOS", "UNIX/Linux"]
+    "Embedded & Firmware": ["C++", "C", "ESP32", "MSP432", "PWM Generation", "Timers & Interrupts", "ADC/GPIO", "Real-time Control Loops"],
+    "Motor & Actuator Control": ["BLDC with ESCs", "Stepper Drivers", "Servos", "Multi-axis Coordination", "ESC Tuning & Calibration"],
+    "Hardware & Sensors": ["Piezoelectric Sensor Integration", "ESC/Servo Interfacing", "Actuator Wiring", "Soldering & Assembly", "Bench Debugging"],
+    "Robotics & Vision": ["ROS (coursework)", "OpenCV", "6-DOF Arm Control", "Machine Vision", "BLE Device Networks"],
+    "Modeling & Simulation": ["MATLAB", "Simulink", "Simscape"],
+    "Software": ["Python (FastAPI)", "React Native", "TypeScript", "JavaScript", "SQL", "Git", "AWS"],
+    "AI/ML": ["LLM Integration", "Agentic Workflows", "Prompt Optimization", "Speech-to-Text", "Scikit-Learn", "NLTK"]
   }
 
   const experience = [
     {
       company: "PongFox",
       location: "Bengaluru, Karnataka, India",
-      position: "AI & Full Stack Developer",
+      position: "AI & Full Stack Developer (Robotics)",
       period: "Jul 2024 - Present",
       achievements: [
-        "Spearheaded the integration of a sophisticated AI agent that converts user speech into direct robot commands",
-        "Led the development of the cross-platform PongFox mobile application using React Native",
-        "Designed and built a user-friendly web interface for event creation and real-time tournament scoring",
-        "Developed and refined low-level C++ firmware for the robot's core microcontroller",
-        "Integrated Raspberry Pi with IoT capabilities for live match information display"
+        "Develops C++ firmware on ESP32 for a robotic table-tennis trainer driving seven actuators — 3× BLDC motors, 1× stepper, 3× servos — coordinating ball speed, spin, feed rate and 2-axis head aiming from a single control loop.",
+        "Tunes ESC parameters and PWM modulation across the BLDC drivetrain, holding shot-to-shot ball placement within ±2.5 cm of target on a given unit despite mechanical variation between wheels.",
+        "Engineered the sensor-integrated \"SmartPad\" accessory: conditioned piezoelectric sensor output into an ESP32 ADC to detect ball impacts and stream events over BLE to the robot controller, automating serve triggering.",
+        "Reworked BLE pairing across robot, SmartPad and mobile app, replacing a scheme that required each device MAC address to be hard-coded into its counterpart with automatic discovery and connection — cutting per-unit pairing from 30–45 minutes of manual provisioning to roughly 5 seconds.",
+        "Integrated an LLM-based voice pipeline converting natural speech into executable robot command sequences at 90% command accuracy, covering prompt design, response parsing and validation before commands reach the control firmware.",
+        "Leads development of the cross-platform React Native app and Python/SQL backend behind it, delivering end-to-end latency of under 0.5 s from app command to motor response.",
+        "Diagnoses and resolves faults across the full stack — motor and ESC behaviour, sensor anomalies, BLE dropouts, firmware-to-app integration — isolating root causes between hardware, firmware and application layers."
       ],
-      technologies: ["Python", "C++", "React Native", "React", "JavaScript", "TypeScript", "SQL", "LLM APIs", "FastAPI", "RESTful APIs", "Raspberry Pi", "IoT protocols", "Git", "Docker"]
-    },
-    {
-      company: "Brilliant InfoTech",
-      location: "Edison, NJ, USA",
-      position: "AWS and Python Developer",
-      period: "Jul 2024 - Mar 2025",
-      achievements: [
-        "Designed and deployed scalable and secure AWS cloud infrastructure using EC2, S3, Lambda, and RDS",
-        "Developed and automated key processes using Python, decreasing manual intervention by 40%",
-        "Enhanced security and compliance across the AWS environment by 30% by implementing IAM roles, VPC configurations, and encryption protocols"
-      ],
-      technologies: ["AWS", "Python"]
+      technologies: ["Embedded C++", "ESP32", "BLDC/ESC", "PWM", "BLE", "Piezoelectric Sensors", "Python", "React Native", "React", "TypeScript", "JavaScript", "SQL", "FastAPI", "RESTful APIs", "LLM APIs", "Raspberry Pi", "IoT protocols", "Git"]
     },
     {
       company: "General Engineering Corporation (GEC)",
       location: "Pune, Maharashtra, India",
-      position: "Power BI Intern",
+      position: "Engineering Intern",
       period: "Sep 2021 - Nov 2021",
       achievements: [
         "Analyzed machining processes for cost/time efficiency, utilizing Python for data preparation",
-        "Developed interactive dashboards and reports using Power BI, improving decision-making by 75%",
+        "Developed interactive dashboards and reports using Power BI to support production decision-making",
         "Optimized Power BI data models achieving a 25% reduction in query response time",
-        "Automated data refresh schedules contributing to a 64% increase in profit"
+        "Automated data refresh schedules for the reporting pipeline"
       ],
       technologies: ["Power BI", "Python", "DAX"]
     }
   ]
 
   const projects = [
+    {
+      title: "Battery Management System for Electric Vehicles",
+      description: "BTech final year project. Modeled both active and passive cell-balancing BMS architectures in MATLAB, Simulink and Simscape, covering cell electrical behavior, thermal effects, current measurement and state-of-charge (SoC) estimation algorithms. Implemented monitoring protocols for charge/discharge cycling and temperature thresholds, with protective action on limit violation. Ran extended-duration and varied-load simulations to quantify the capacity degradation prevented versus an unmanaged pack and to validate system stability under load.",
+      technologies: ["MATLAB", "Simulink", "Simscape", "Active & Passive Cell Balancing", "SoC Estimation", "Thermal Modeling"]
+    },
+    {
+      title: "Robotics and AI for Object Sorting",
+      description: "Built a 6-DOF robotic arm sorting cell using OpenCV machine vision on a Raspberry Pi to classify objects by visual features. Programmed the pick-and-place control logic and calibrated the integrated system for real-time accuracy and repeatability.",
+      technologies: ["Python", "OpenCV", "Raspberry Pi", "6-DOF Arm Control", "Machine Vision"]
+    },
     {
       title: "Sentiment Analysis of Movie Reviews",
       description: "Conducted sentiment analysis on movie review datasets using rule-based techniques and a Recurrent Neural Network (RNN). Applied data pre-processing, tokenization, and feature extraction to improve model performance, ultimately achieving 85% accuracy in classifying reviews.",
@@ -69,21 +89,6 @@ function App() {
       title: "Medicine Recommendation & Tracking App",
       description: "Created a mobile application for physicians to provide up-to-date medication information and support clinical decision-making. It also helps users manage prescriptions, schedules, and reminders. Constructed a comprehensive and stable MySQL database for the application and executed the project in an Agile environment using Jira.",
       technologies: ["Python", "React Native", "MySQL", "Jira"]
-    },
-    {
-      title: "Robotics and AI for Object Sorting",
-      description: "Developed an AI-driven system using a 6-DOF robotic arm for automated object separation. Implemented AI/machine vision algorithms with OpenCV on a Raspberry Pi to identify and classify objects, then programmed the robotic arm's control logic for accurate picking and placement.",
-      technologies: ["Python", "OpenCV", "Raspberry Pi", "Robotic Arm Control"]
-    },
-    {
-      title: "Battery Management System for EV",
-      description: "Built a simulation model of a Battery Management System (BMS) for electric vehicles using MATLAB and Simulink. Modeled key components like battery cells, thermal effects, and state-of-charge (SoC) estimation algorithms, and integrated safety protocols.",
-      technologies: ["MATLAB", "Simulink", "Simscape"]
-    },
-    {
-      title: "Zombie Puzzle Game (Top-Down Shooter)",
-      description: "Collaborated in a team to develop a zombie-themed puzzle game, designing top-down mechanics, player controls, and puzzle-based stages. Implemented core game logic, enemy AI behaviors, and level transitions, focusing on performance and user experience.",
-      technologies: ["C++", "Unreal Engine"]
     }
   ]
 
@@ -94,6 +99,7 @@ function App() {
       degree: "Master of Science (MS) in Computer Science",
       period: "Sep 2022 - May 2024",
       concentration: "Artificial Intelligence",
+      gpa: "GPA: 3.82 / 4.0",
       coursework: "AI (Artificial Intelligence), DL (Deep Learning), ML (Machine Learning), Artificial Neural Networks, Data Structures, Data Analysis, Algorithms and Computing Theory, Database Management Systems, OOP using Java, Agile Methodologies, Python"
     },
     {
@@ -101,117 +107,256 @@ function App() {
       location: "Karnataka, India",
       degree: "Bachelor of Technology (BTech) in Mechatronics",
       period: "Aug 2018 - Jul 2022",
-      concentration: "Electric Vehicle Technology"
+      concentration: "Electric Vehicle Technology",
+      gpa: "CGPA: 8.67 / 10",
+      coursework: "Robotics & ROS, Control Systems, Embedded Systems, Power Electronics, Machine Vision"
     }
   ]
 
   const getSkillIcon = (category) => {
     switch (category) {
-      case "Programming Languages": return <Code className="w-5 h-5" />
-      case "ML/AI": return <Brain className="w-5 h-5" />
-      case "Cloud Software": return <Cloud className="w-5 h-5" />
-      case "Frameworks & Tools": return <Cpu className="w-5 h-5" />
-      case "Database Management": return <Database className="w-5 h-5" />
-      case "Software/Tools": return <Cpu className="w-5 h-5" />
-      case "Operating Systems": return <Smartphone className="w-5 h-5" />
+      case "Embedded & Firmware": return <CircuitBoard className="w-5 h-5" />
+      case "Motor & Actuator Control": return <Cog className="w-5 h-5" />
+      case "Hardware & Sensors": return <Wrench className="w-5 h-5" />
+      case "Robotics & Vision": return <Bot className="w-5 h-5" />
+      case "Modeling & Simulation": return <LineChart className="w-5 h-5" />
+      case "Software": return <Code className="w-5 h-5" />
+      case "AI/ML": return <Brain className="w-5 h-5" />
       default: return <Code className="w-5 h-5" />
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="dark relative min-h-screen bg-slate-950 text-slate-300 selection:bg-cyan-500/30 selection:text-white">
+      {/* Ambient background */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-40 -left-32 h-[32rem] w-[32rem] rounded-full bg-cyan-500/10 blur-[120px]" />
+        <div className="absolute top-1/3 -right-40 h-[34rem] w-[34rem] rounded-full bg-blue-600/10 blur-[130px]" />
+        <div className="absolute bottom-0 left-1/3 h-[28rem] w-[28rem] rounded-full bg-indigo-500/10 blur-[120px]" />
+        <div
+          className="absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)',
+            backgroundSize: '64px 64px'
+          }}
+        />
+      </div>
+
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-xl font-bold text-slate-800">Yash Vora</h1>
-            <div className="hidden md:flex space-x-8">
-              <a href="#about" className="text-slate-600 hover:text-blue-600 transition-colors">About</a>
-              <a href="#experience" className="text-slate-600 hover:text-blue-600 transition-colors">Experience</a>
-              <a href="#projects" className="text-slate-600 hover:text-blue-600 transition-colors">Projects</a>
-              <a href="#skills" className="text-slate-600 hover:text-blue-600 transition-colors">Skills</a>
-              <a href="#education" className="text-slate-600 hover:text-blue-600 transition-colors">Education</a>
-              <a href="#contact" className="text-slate-600 hover:text-blue-600 transition-colors">Contact</a>
+      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-slate-950/80 backdrop-blur-xl">
+        <div className="mx-auto max-w-6xl px-6 py-4">
+          <div className="flex items-center justify-between">
+            <a href="#top" className="text-lg font-bold tracking-tight text-white">
+              Yash Vora
+            </a>
+            <div className="hidden md:flex md:items-center md:gap-8">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-slate-400 transition-colors hover:text-cyan-400"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <Button
+                asChild
+                size="sm"
+                className="border-0 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20 hover:from-cyan-400 hover:to-blue-500"
+              >
+                <a href={resumeUrl} download className="flex items-center gap-2">
+                  <Download className="h-4 w-4" />
+                  Resume
+                </a>
+              </Button>
             </div>
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              className="-mr-2 p-2 text-slate-300 transition-colors hover:text-cyan-400 md:hidden"
+            >
+              {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
           </div>
+          {menuOpen && (
+            <div className="mt-4 flex flex-col border-t border-white/5 pt-4 md:hidden">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="py-2 text-slate-400 transition-colors hover:text-cyan-400"
+                >
+                  {link.label}
+                </a>
+              ))}
+              <a
+                href={resumeUrl}
+                download
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-2 py-2 font-medium text-cyan-400"
+              >
+                <Download className="h-4 w-4" />
+                Download Resume
+              </a>
+            </div>
+          )}
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 pb-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
+      <section id="top" className="px-6 pt-32 pb-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col items-center gap-14 lg:flex-row">
             <div className="flex-1 text-center lg:text-left">
-              <h1 className="text-5xl lg:text-6xl font-bold text-slate-800 mb-6">
-                Hi, I'm <span className="text-blue-600">Yash Vora</span>
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium tracking-wide text-cyan-300 uppercase">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+                Robotics &middot; Embedded &middot; Firmware
+              </div>
+              <h1 className="mb-5 text-5xl font-bold tracking-tight text-white lg:text-7xl">
+                Hi, I&apos;m{' '}
+                <span className="bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 bg-clip-text text-transparent">
+                  Yash Vora
+                </span>
               </h1>
-              <h2 className="text-2xl lg:text-3xl text-slate-600 mb-6">
-                AI & Full Stack Developer
+              <h2 className="mb-6 text-2xl font-medium text-slate-300 lg:text-3xl">
+                Robotics &amp; Embedded Systems Engineer
               </h2>
-              <p className="text-lg text-slate-600 mb-8 max-w-2xl">
-                A results-driven Software Developer with expertise in AI integration, robotics, and full-stack development. 
-                Specialized in architecting AI agentic workflows and building scalable cloud solutions.
+              <p className="mx-auto mb-9 max-w-2xl text-lg leading-relaxed text-slate-400 lg:mx-0">
+                I co-develop the embedded firmware and control software behind a commercial robotics product &mdash; ESP32
+                firmware driving seven actuators, ESC-based BLDC motor control, piezoelectric sensing and BLE device
+                networking &mdash; along with the mobile app and backend that drive the robot.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+              <div className="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
+                <Button
+                  asChild
+                  size="lg"
+                  className="border-0 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 transition-all hover:from-cyan-400 hover:to-blue-500 hover:shadow-cyan-500/40"
+                >
                   <a href="#projects" className="flex items-center gap-2">
                     View Projects
-                    <ExternalLink className="w-4 h-4" />
+                    <ExternalLink className="h-4 w-4" />
                   </a>
                 </Button>
-                <Button variant="outline" size="lg">
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+                >
+                  <a href={resumeUrl} download className="flex items-center gap-2">
+                    <Download className="h-4 w-4" />
+                    Download Resume
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+                >
                   <a href="#contact" className="flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
+                    <Mail className="h-4 w-4" />
                     Contact Me
                   </a>
                 </Button>
               </div>
             </div>
             <div className="flex-shrink-0">
-              <div className="w-80 h-80 rounded-full overflow-hidden border-8 border-white shadow-2xl">
-                <img 
-                  src={profilePhoto} 
-                  alt="Yash Vora" 
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative">
+                <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-cyan-500/30 via-blue-600/20 to-transparent blur-2xl" />
+                <div className="relative h-72 w-72 overflow-hidden rounded-full border border-white/10 p-1.5 lg:h-80 lg:w-80">
+                  <div className="h-full w-full overflow-hidden rounded-full ring-1 ring-cyan-400/30">
+                    <img src={profilePhoto} alt="Yash Vora" className="h-full w-full object-cover" />
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* Verified highlight metrics */}
+          <div className="mt-16 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {highlights.map((item, index) => (
+              <div
+                key={index}
+                className="rounded-2xl border border-white/5 bg-white/[0.03] p-5 backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+              >
+                <div className="mb-1 text-2xl font-bold text-cyan-400 lg:text-3xl">{item.value}</div>
+                <div className="text-xs leading-relaxed text-slate-500">{item.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-16 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-slate-800 mb-12">About Me</h2>
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-lg text-slate-600 mb-6">
-                A results-driven and detail-oriented Software Developer with over a year of experience, 
-                complemented by a Master of Science in Computer Science with an AI specialization.
+      <section id="about" className="border-t border-white/5 px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading kicker="About" title="Who I am" />
+          <div className="grid items-start gap-12 lg:grid-cols-2">
+            <div className="space-y-6">
+              <p className="text-lg leading-relaxed text-slate-400">
+                A mechatronics engineer with over two years on a commercial robotics product, backed by a Master of
+                Science in Computer Science with a concentration in Artificial Intelligence.
               </p>
-              <p className="text-lg text-slate-600 mb-6">
-                I have expertise in AI integration and robotics, with a proven ability to architect and deploy 
-                complex AI agentic workflows using LLM APIs to translate natural language into robotic commands.
+              <p className="text-lg leading-relaxed text-slate-400">
+                I develop the embedded firmware and control software end to end &mdash; C++ firmware on ESP32 driving seven
+                actuators, ESC-based BLDC motor control, piezoelectric sensing conditioned into the ADC, and BLE device
+                networking across robot, accessory and app.
               </p>
-              <p className="text-lg text-slate-600">
-                Proficient in full-stack development, spanning low-level C++ firmware, cross-platform React Native 
-                mobile applications, and robust Python backends. Skilled in designing, deploying, and optimizing 
-                scalable AWS cloud environments.
+              <p className="text-lg leading-relaxed text-slate-400">
+                My work spans low-level motor control through to the React Native app and Python backend that drive the
+                robot, and I am the usual first call when motors, sensors or hardware-software integration misbehave
+                &mdash; isolating root causes between the hardware, firmware and application layers.
               </p>
             </div>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <MapPin className="w-5 h-5 text-blue-600" />
-                <span className="text-slate-600">Mumbai, Maharashtra, India</span>
+            <div className="space-y-3 rounded-2xl border border-white/5 bg-white/[0.03] p-6 backdrop-blur-sm">
+              <div className="flex items-center gap-4 rounded-xl px-2 py-2.5">
+                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+                  <MapPin className="h-5 w-5" />
+                </span>
+                <span className="text-slate-300">Bengaluru, Karnataka, India</span>
               </div>
-              <div className="flex items-center gap-3">
-                <Mail className="w-5 h-5 text-blue-600" />
-                <a href="mailto:yashvora2711@gmail.com" className="text-slate-600 hover:text-blue-600 transition-colors">yashvora2711@gmail.com</a>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-blue-600" />
-                <a href="tel:+919930852711" className="text-slate-600 hover:text-blue-600 transition-colors">+91 9930852711</a>
+              <a
+                href="mailto:yashvora2711@gmail.com"
+                className="flex items-center gap-4 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/5"
+              >
+                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+                  <Mail className="h-5 w-5" />
+                </span>
+                <span className="text-slate-300 transition-colors hover:text-cyan-400">yashvora2711@gmail.com</span>
+              </a>
+              <a
+                href="tel:+919930852711"
+                className="flex items-center gap-4 rounded-xl px-2 py-2.5 transition-colors hover:bg-white/5"
+              >
+                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-cyan-500/10 text-cyan-400">
+                  <Phone className="h-5 w-5" />
+                </span>
+                <span className="text-slate-300 transition-colors hover:text-cyan-400">+91 9930852711</span>
+              </a>
+              <div className="flex gap-3 pt-3">
+                <a
+                  href="https://www.linkedin.com/in/yochamp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-slate-400 transition-colors hover:border-cyan-500/40 hover:text-cyan-400"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
+                <a
+                  href="https://github.com/yochamp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-slate-400 transition-colors hover:border-cyan-500/40 hover:text-cyan-400"
+                >
+                  <Github className="h-5 w-5" />
+                </a>
               </div>
             </div>
           </div>
@@ -219,37 +364,44 @@ function App() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="py-16 px-6 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-slate-800 mb-12">Professional Experience</h2>
-          <div className="space-y-8">
+      <section id="experience" className="border-t border-white/5 px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading kicker="Experience" title="Professional Experience" />
+          <div className="space-y-6">
             {experience.map((job, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              <Card
+                key={index}
+                className="group border-white/5 bg-white/[0.03] backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+              >
                 <CardHeader>
-                  <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
+                  <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div>
-                      <CardTitle className="text-xl text-slate-800">{job.position}</CardTitle>
-                      <CardDescription className="text-lg font-semibold text-blue-600">
-                        {job.company} • {job.location}
+                      <CardTitle className="text-xl text-white">{job.position}</CardTitle>
+                      <CardDescription className="mt-1 text-base font-medium text-cyan-400">
+                        {job.company} &middot; {job.location}
                       </CardDescription>
                     </div>
-                    <Badge variant="secondary" className="self-start">
+                    <Badge className="self-start border-white/10 bg-white/5 font-normal text-slate-400">
                       {job.period}
                     </Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-2 mb-4">
+                  <ul className="mb-6 space-y-3">
                     {job.achievements.map((achievement, idx) => (
-                      <li key={idx} className="text-slate-600 flex items-start gap-2">
-                        <span className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></span>
+                      <li key={idx} className="flex items-start gap-3 leading-relaxed text-slate-400">
+                        <span className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-400" />
                         {achievement}
                       </li>
                     ))}
                   </ul>
                   <div className="flex flex-wrap gap-2">
                     {job.technologies.map((tech, idx) => (
-                      <Badge key={idx} variant="outline" className="text-xs">
+                      <Badge
+                        key={idx}
+                        variant="outline"
+                        className="border-white/10 bg-white/[0.03] text-xs font-normal text-slate-400"
+                      >
                         {tech}
                       </Badge>
                     ))}
@@ -262,20 +414,30 @@ function App() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-16 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-slate-800 mb-12">Featured Projects</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section id="projects" className="border-t border-white/5 px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading kicker="Projects" title="Featured Projects" />
+          <div className="grid gap-6 md:grid-cols-2">
             {projects.map((project, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow h-full">
+              <Card
+                key={index}
+                className="flex h-full flex-col border-white/5 bg-white/[0.03] backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+              >
                 <CardHeader>
-                  <CardTitle className="text-lg text-slate-800">{project.title}</CardTitle>
+                  <div className="mb-1 font-mono text-xs text-cyan-400/70">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+                  <CardTitle className="text-lg leading-snug text-white">{project.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="flex flex-col h-full">
-                  <p className="text-slate-600 mb-4 flex-grow">{project.description}</p>
+                <CardContent className="flex flex-1 flex-col">
+                  <p className="mb-5 flex-grow text-sm leading-relaxed text-slate-400">{project.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech, idx) => (
-                      <Badge key={idx} variant="outline" className="text-xs">
+                      <Badge
+                        key={idx}
+                        variant="outline"
+                        className="border-white/10 bg-white/[0.03] text-xs font-normal text-slate-400"
+                      >
                         {tech}
                       </Badge>
                     ))}
@@ -288,22 +450,30 @@ function App() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-16 px-6 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-slate-800 mb-12">Technical Skills</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section id="skills" className="border-t border-white/5 px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading kicker="Skills" title="Technical Skills" />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Object.entries(skills).map(([category, skillList], index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              <Card
+                key={index}
+                className="border-white/5 bg-white/[0.03] backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+              >
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-3 text-lg text-slate-800">
-                    {getSkillIcon(category)}
+                  <CardTitle className="flex items-center gap-3 text-base text-white">
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-600/10 text-cyan-400">
+                      {getSkillIcon(category)}
+                    </span>
                     {category}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
                     {skillList.map((skill, idx) => (
-                      <Badge key={idx} variant="secondary" className="text-xs">
+                      <Badge
+                        key={idx}
+                        className="border-white/10 bg-white/5 text-xs font-normal text-slate-300 hover:bg-white/10"
+                      >
                         {skill}
                       </Badge>
                     ))}
@@ -316,32 +486,36 @@ function App() {
       </section>
 
       {/* Education Section */}
-      <section id="education" className="py-16 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center text-slate-800 mb-12">Education</h2>
-          <div className="space-y-8">
+      <section id="education" className="border-t border-white/5 px-6 py-24">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading kicker="Education" title="Education" />
+          <div className="space-y-6">
             {education.map((edu, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              <Card
+                key={index}
+                className="border-white/5 bg-white/[0.03] backdrop-blur-sm transition-colors hover:border-cyan-500/25"
+              >
                 <CardHeader>
-                  <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-4">
+                  <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div>
-                      <CardTitle className="text-xl text-slate-800">{edu.degree}</CardTitle>
-                      <CardDescription className="text-lg font-semibold text-blue-600">
-                        {edu.institution} • {edu.location}
+                      <CardTitle className="text-xl text-white">{edu.degree}</CardTitle>
+                      <CardDescription className="mt-1 text-base font-medium text-cyan-400">
+                        {edu.institution} &middot; {edu.location}
                       </CardDescription>
                       {edu.concentration && (
-                        <p className="text-slate-600 mt-2">Concentration: {edu.concentration}</p>
+                        <p className="mt-3 text-slate-400">Concentration: {edu.concentration}</p>
                       )}
+                      {edu.gpa && <p className="mt-1 font-medium text-slate-300">{edu.gpa}</p>}
                     </div>
-                    <Badge variant="secondary" className="self-start">
+                    <Badge className="self-start border-white/10 bg-white/5 font-normal text-slate-400">
                       {edu.period}
                     </Badge>
                   </div>
                 </CardHeader>
                 {edu.coursework && (
                   <CardContent>
-                    <p className="text-slate-600">
-                      <strong>Relevant Coursework:</strong> {edu.coursework}
+                    <p className="text-sm leading-relaxed text-slate-400">
+                      <span className="font-medium text-slate-300">Relevant coursework:</span> {edu.coursework}
                     </p>
                   </CardContent>
                 )}
@@ -352,29 +526,64 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 px-6 bg-slate-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-slate-800 mb-8">Get In Touch</h2>
-          <p className="text-lg text-slate-600 mb-8">
-            I'm always open to discussing new opportunities and interesting projects. 
-            Feel free to reach out if you'd like to connect!
+      <section id="contact" className="border-t border-white/5 px-6 py-24">
+        <div className="mx-auto max-w-4xl text-center">
+          <SectionHeading kicker="Contact" title="Get In Touch" centered />
+          <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-slate-400">
+            I&apos;m always open to discussing robotics and embedded work, new opportunities and interesting problems.
+            Feel free to reach out if you&apos;d like to connect.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row sm:flex-wrap">
+            <Button
+              asChild
+              size="lg"
+              className="border-0 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 hover:from-cyan-400 hover:to-blue-500"
+            >
               <a href="mailto:yashvora2711@gmail.com" className="flex items-center gap-2">
-                <Mail className="w-4 h-4" />
+                <Mail className="h-4 w-4" />
                 Send Email
               </a>
             </Button>
-            <Button variant="outline" size="lg">
-              <a href="https://www.linkedin.com/in/yochamp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                <Linkedin className="w-4 h-4" />
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+            >
+              <a href={resumeUrl} download className="flex items-center gap-2">
+                <Download className="h-4 w-4" />
+                Download Resume
+              </a>
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+            >
+              <a
+                href="https://www.linkedin.com/in/yochamp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2"
+              >
+                <Linkedin className="h-4 w-4" />
                 LinkedIn
               </a>
             </Button>
-            <Button variant="outline" size="lg">
-              <a href="https://github.com/yochamp" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                <Github className="w-4 h-4" />
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-white/15 bg-white/5 text-slate-200 hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+            >
+              <a
+                href="https://github.com/yochamp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2"
+              >
+                <Github className="h-4 w-4" />
                 GitHub
               </a>
             </Button>
@@ -383,13 +592,28 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 bg-slate-800 text-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-slate-300">
-            © 2025 Yash Vora. All rights reserved.
-          </p>
+      <footer className="border-t border-white/5 px-6 py-10">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-sm text-slate-500 sm:flex-row">
+          <p>&copy; 2026 Yash Vora. All rights reserved.</p>
+          <p>Built with React, Vite and Tailwind CSS.</p>
         </div>
       </footer>
+    </div>
+  )
+}
+
+function SectionHeading({ kicker, title, centered = false }) {
+  return (
+    <div className={centered ? "mb-8 text-center" : "mb-12"}>
+      <div className="mb-3 text-xs font-medium tracking-[0.2em] text-cyan-400 uppercase">{kicker}</div>
+      <h2 className="text-3xl font-bold tracking-tight text-white lg:text-4xl">{title}</h2>
+      <div
+        className={
+          centered
+            ? "mx-auto mt-4 h-px w-24 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"
+            : "mt-4 h-px w-24 bg-gradient-to-r from-cyan-500 to-transparent"
+        }
+      />
     </div>
   )
 }
